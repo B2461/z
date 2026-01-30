@@ -1,0 +1,115 @@
+
+import { Product } from '../types';
+
+export const products: Product[] = [
+  {
+    id: 'm-007',
+    name: 'Handfree',
+    description: 'Wireless handfree with 20% discount and black color. High quality sound.',
+    mrp: 499,
+    discountPercentage: 20,
+    colors: ['Black'],
+    imageUrl1: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1763913458/ms_kfzve_512_589283232_slnxpr.jpg',
+    imageUrl2: '',
+    category: 'Mobile Accessories',
+    productType: 'PHYSICAL',
+    reviewVideoUrl: ''
+  },
+  {
+    id: 'm-008',
+    name: 'White Earbuds',
+    description: 'High-quality wireless earbuds with clear sound and comfortable fit. Long battery life.',
+    mrp: 599,
+    discountPercentage: 20,
+    colors: ['White'],
+    imageUrl1: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764078723/ms_d0wrj_512_590564493_kzuv7j.jpg',
+    imageUrl2: '',
+    category: 'Mobile Accessories',
+    productType: 'PHYSICAL',
+    reviewVideoUrl: ''
+  },
+  {
+    id: 'm-009',
+    name: 'Selfie Stick',
+    description: 'Extendable selfie stick with bluetooth remote. Compatible with most smartphones. Free Size.',
+    mrp: 249,
+    discountPercentage: 20,
+    colors: ['Black'],
+    sizes: ['Free Size'],
+    imageUrl1: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764500392/ms_1fjde_512_178989246_h1x98k.jpg',
+    imageUrl2: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764500393/ms_tcslp_512_178989246_qrt6kb.jpg',
+    category: 'Mobile Accessories',
+    productType: 'PHYSICAL',
+    reviewVideoUrl: 'https://res.cloudinary.com/de2eehtiy/video/upload/v1764500955/InShot_20251117_154610738_ndcxta.mp4'
+  },
+  {
+    id: 'm-010',
+    name: 'speaking bird tools toy',
+    description: 'Speaking bird tools toy. Free size.',
+    mrp: 499,
+    discountPercentage: 20,
+    colors: ['Yellow'],
+    sizes: ['Free Size'],
+    imageUrl1: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764500966/ms_rnknd_512_617611248_fer8jg.jpg',
+    imageUrl2: '',
+    category: 'Mobile Accessories',
+    productType: 'PHYSICAL',
+    reviewVideoUrl: ''
+  },
+  {
+    id: 'j-002',
+    name: 'गले का हार (Golden Necklace)',
+    description: 'फ्री साइज गोल्डन हार। सुंदर डिजाइन जो सभी अवसरों के लिए उपयुक्त है। (Free Size)',
+    mrp: 249,
+    discountPercentage: 20,
+    colors: ['Golden'],
+    sizes: ['Free Size'],
+    imageUrl1: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764500968/ms_egvzl_512_513879333_dktodj.jpg',
+    imageUrl2: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764500968/ms_nha5k_512_513879333_l6qgz0.jpg',
+    category: 'Gems & Jewelry',
+    productType: 'PHYSICAL',
+    reviewVideoUrl: 'https://res.cloudinary.com/de2eehtiy/video/upload/v1764095597/5_6129929173419956762_1_hd1rpt.mp4'
+  },
+  {
+    id: 'a-004',
+    name: 'Lady bag',
+    description: 'Stylish lady bag, Free size.',
+    mrp: 399,
+    discountPercentage: 20,
+    colors: ['Multicolor'],
+    sizes: ['Free Size'],
+    imageUrl1: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764572742/ms_utq3x_512_593439393_ln5on5.jpg',
+    imageUrl2: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764572743/ms_j0q1j_512_593439395_ko7gex.jpg',
+    category: 'Accessories',
+    productType: 'PHYSICAL',
+    reviewVideoUrl: ''
+  },
+  {
+    id: 'p-007',
+    name: 'काले घोड़े की नाल',
+    description: 'Kale Ghode ki Naal for good luck and protection. Free size.',
+    mrp: 299,
+    discountPercentage: 20,
+    colors: ['Black'],
+    sizes: ['Free Size'],
+    imageUrl1: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764572743/ms_gs2jk_512_476579236_jscfhe.jpg',
+    imageUrl2: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764572743/ms_gs2jk_512_476579236_jscfhe.jpg',
+    category: 'Pujan Samagri',
+    productType: 'PHYSICAL',
+    reviewVideoUrl: ''
+  },
+  {
+    id: 's-004',
+    name: 'Baby Shoes',
+    description: 'Comfortable baby shoes in various colors and sizes.',
+    mrp: 299,
+    discountPercentage: 20,
+    colors: ['Yellow', 'Red', 'Blue', 'Orange'],
+    sizes: ['0-3 MONTHS', '3-6 MONTHS', '6-9 MONTHS', '9-12 MONTHS'],
+    imageUrl1: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764572744/ms_ndsos_512_559165812_jndrpk.jpg',
+    imageUrl2: 'https://res.cloudinary.com/de2eehtiy/image/upload/v1764572742/ms_10nce_512_559165812_gkdhg0.jpg',
+    category: 'Shoes',
+    productType: 'PHYSICAL',
+    reviewVideoUrl: 'https://res.cloudinary.com/de2eehtiy/video/upload/v1764095597/5_6129929173419956762_1_hd1rpt.mp4'
+  }
+];

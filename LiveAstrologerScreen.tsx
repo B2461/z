@@ -1,0 +1,19 @@
+
+import React from 'react';
+import Card from './Card';
+
+interface LiveAstrologerScreenProps {
+    onBack: () => void;
+}
+
+const LiveAstrologerScreen: React.FC<LiveAstrologerScreenProps> = ({ onBack }) => {
+    return (
+        <Card className="animate-fade-in max-w-2xl mx-auto text-center">
+            <button onClick={onBack} className="absolute top-6 left-6 text-purple-300 hover:text-white transition">&larr; वापस</button>
+            <h2 className="text-3xl font-hindi font-bold mb-4">सुविधा उपलब्ध नहीं है</h2>
+            <p className="text-purple-200">यह सुविधा ऐप के इस संस्करण से हटा दी गई है।</p>
+        </Card>
+    );
+};
+
+export default LiveAstrologerScreen;

@@ -1,0 +1,9 @@
+{
+  "name": "Ok-E-Store 102✨",
+  "description": "Premium Online Shopping Store for Mobile Accessories, E-books, Jewelry, and Shoes.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
