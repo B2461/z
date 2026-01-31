@@ -1,10 +1,10 @@
 
 import React, { useState, useCallback, useEffect, useRef, createContext, useContext, useMemo } from 'react';
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-import { DivinationType, CartItem, Order, CustomerDetails, Product, Notification, VerificationRequest, SupportTicket, SocialMediaPost, SubscriptionPlan, UserProfile, SavedReading } from './types.ts';
-import { products as initialProducts } from './data/products.ts';
-import { ebooks } from './data/ebooks.ts';
-import { toolCategories, showcaseTools } from './data/tools.ts';
+import { DivinationType, CartItem, Order, CustomerDetails, Product, Notification, VerificationRequest, SupportTicket, SocialMediaPost, SubscriptionPlan, UserProfile, SavedReading } from './types';
+import { products as initialProducts } from './data/products';
+import { ebooks } from './data/ebooks';
+import { toolCategories, showcaseTools } from './data/tools';
 import { 
     subscribeToAuthChanges, loginUser, registerUser, logoutUser, getFirestoreProducts, 
     saveUserProfile, updateFirestoreOrder, deleteFirestoreVerification,
@@ -12,36 +12,36 @@ import {
     updateSupportTicketStatus, getUserProfile, subscribeToUserReadings, deleteSavedReading,
     subscribeToUserOrders, getUserByEmail, subscribeToUserProfile, getUserByPhone,
     subscribeToProducts, incrementUserDownloads
-} from './services/firebaseService.ts';
+} from './services/firebaseService';
 
 // Components
-import WelcomeScreen from './components/WelcomeScreen.tsx';
-import SelectionScreen from './components/SelectionScreen.tsx';
-import SettingsScreen from './components/SettingsScreen.tsx';
-import PujanSamagriStore from './components/PujanSamagriStore.tsx';
-import ProductDetailScreen from './components/ProductDetailScreen.tsx';
-import ShoppingCartScreen from './components/ShoppingCartScreen.tsx';
-import CheckoutScreen from './components/CheckoutScreen.tsx';
-import OrderConfirmationScreen from './components/OrderConfirmationScreen.tsx';
-import NotificationBell from './components/NotificationBell.tsx';
-import AdminScreen from './components/AdminScreen.tsx';
-import TermsAndConditions from './components/TermsAndConditions.tsx';
-import PrivacyPolicy from './components/PrivacyPolicy.tsx';
-import ProfileScreen from './components/ProfileScreen.tsx';
-import BottomNavBar from './components/BottomNavBar.tsx';
-import LoginScreen from './components/LoginScreen.tsx';
-import OrderHistoryScreen from './components/OrderHistoryScreen.tsx';
-import SupportTicketScreen from './components/SupportTicketScreen.tsx';
-import SearchModal from './components/SearchModal.tsx';
-import PremiumScreen from './components/PremiumScreen.tsx';
-import SubscriptionPaymentScreen from './components/SubscriptionPaymentScreen.tsx';
-import SubscriptionConfirmationScreen from './components/SubscriptionConfirmationScreen.tsx';
-import WishlistScreen from './components/WishlistScreen.tsx';
-import DivinationScreen from './components/DivinationScreen.tsx';
-import CommunityChatScreen from './components/CommunityChatScreen.tsx';
-import AccountSettingsScreen from './components/AccountSettingsScreen.tsx';
-import FAQScreen from './components/FAQScreen.tsx';
-import PastReadingsScreen from './components/PastReadingsScreen.tsx';
+import WelcomeScreen from './components/WelcomeScreen';
+import SelectionScreen from './components/SelectionScreen';
+import SettingsScreen from './components/SettingsScreen';
+import PujanSamagriStore from './components/PujanSamagriStore';
+import ProductDetailScreen from './components/ProductDetailScreen';
+import ShoppingCartScreen from './components/ShoppingCartScreen';
+import CheckoutScreen from './components/CheckoutScreen';
+import OrderConfirmationScreen from './components/OrderConfirmationScreen';
+import NotificationBell from './components/NotificationBell';
+import AdminScreen from './components/AdminScreen';
+import TermsAndConditions from './components/TermsAndConditions';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import ProfileScreen from './components/ProfileScreen';
+import BottomNavBar from './components/BottomNavBar';
+import LoginScreen from './components/LoginScreen';
+import OrderHistoryScreen from './components/OrderHistoryScreen';
+import SupportTicketScreen from './components/SupportTicketScreen';
+import SearchModal from './components/SearchModal';
+import PremiumScreen from './components/PremiumScreen';
+import SubscriptionPaymentScreen from './components/SubscriptionPaymentScreen';
+import SubscriptionConfirmationScreen from './components/SubscriptionConfirmationScreen';
+import WishlistScreen from './components/WishlistScreen';
+import DivinationScreen from './components/DivinationScreen';
+import CommunityChatScreen from './components/CommunityChatScreen';
+import AccountSettingsScreen from './components/AccountSettingsScreen';
+import FAQScreen from './components/FAQScreen';
+import PastReadingsScreen from './components/PastReadingsScreen';
 
 // --- Global Icons ---
 function CartIcon({ isActive }: { isActive: boolean }) {
@@ -294,6 +294,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         try { const saved = localStorage.getItem('okFutureZoneSupportTickets'); return saved ? JSON.parse(saved) : []; } catch { return []; }
     });
     
+    // Initialize wishlist/cart from LocalStorage, but will overwrite with Cloud data on login
     const [wishlist, setWishlist] = useState<string[]>(() => {
         try { const saved = localStorage.getItem('okFutureZoneWishlist'); return saved ? JSON.parse(saved) : []; } catch { return []; }
     });
@@ -313,6 +314,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setRefreshTrigger(prev => prev + 1);
     }, []);
 
+    // --- CLOUD SYNC SHIELD: Load Data on Login ---
     useEffect(() => {
         let unsubscribeReadings: (() => void) | undefined;
         let unsubscribeOrders: (() => void) | undefined;
@@ -324,6 +326,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             if (firebaseUser) {
                 const email = firebaseUser.email || '';
                 
+                // Subscribe to Profile Changes Real-time
                 unsubscribeProfile = subscribeToUserProfile(firebaseUser.uid, (cloudProfile) => {
                     const baseProfile: UserProfile = cloudProfile || {
                         uid: firebaseUser.uid, 
@@ -339,10 +342,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                     setIsAuthenticated(true);
                 });
 
+                // Subscribe to Saved Readings
                 unsubscribeReadings = subscribeToUserReadings(firebaseUser.uid, (readings) => {
                     setSavedReadings(readings);
                 });
 
+                // Subscribe to User Orders
                 if (email) {
                     unsubscribeOrders = subscribeToUserOrders(email, (syncedOrders) => {
                         setOrders(syncedOrders);
@@ -371,6 +376,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         };
     }, []);
 
+    // --- CLOUD SYNC SHIELD: Auto-Save Wishlist ---
     const cloudWishlist = currentUser?.wishlist;
     const uid = currentUser?.uid;
     
@@ -542,6 +548,38 @@ const AppComp: React.FC = () => {
 
     const cloudCart = currentUser?.cart;
     const isCartLoaded = useRef(false);
+
+    // --- DAILY AUTOMATED NOTIFICATIONS (E-BOOKS & SELLING) ---
+    useEffect(() => {
+        const lastNotifDate = localStorage.getItem('ok_daily_notif_date');
+        const todayStr = new Date().toDateString();
+
+        if (lastNotifDate !== todayStr) {
+            const dailyNotifs = [
+                { icon: '💰', title: 'कमाई शुरू करें!', message: 'हमारी प्रीमियम ई-बुक्स को रीसेल करें और आज ही अपना ऑनलाइन बिजनेस शुरू करें।' },
+                { icon: '📦', title: 'नया स्टॉक अलर्ट!', message: 'लेटेस्ट मोबाइल एक्सेसरीज और ट्रेंडी जूतों पर आज 50% तक की भारी छूट है।' },
+                { icon: '🎓', title: 'कौशल विकसित करें!', message: 'कंप्यूटर और मोबाइल रिपेयरिंग मास्टर कोर्स के साथ आत्मनिर्भर बनें। कोर्सेज अपडेटेड हैं।' },
+                { icon: '⚡', title: 'सीमित समय ऑफर!', message: 'आज की पूजन सामग्री खरीदारी पर पाएं फ्री ई-बुक कूपन कोड। चेकआउट करें।' },
+                { icon: '📢', title: 'डिजिटल लाइब्रेरी!', message: '100+ गुप्त तंत्र मंत्र यंत्र PDF अब मोबाइल में। एक बार खरीदें, बार-बार बेचें।' }
+            ];
+
+            // Pick a notification based on the day of month to rotate them
+            const dayOfMonth = new Date().getDate();
+            const selected = dailyNotifs[dayOfMonth % dailyNotifs.length];
+
+            const newNotif: Notification = {
+                id: `daily-${Date.now()}`,
+                icon: selected.icon,
+                title: selected.title,
+                message: selected.message,
+                timestamp: new Date().toISOString(),
+                read: false
+            };
+
+            setNotifications(prev => [newNotif, ...prev]);
+            localStorage.setItem('ok_daily_notif_date', todayStr);
+        }
+    }, []);
 
     useEffect(() => {
         if (!isAuthenticated) { isCartLoaded.current = false; }
@@ -785,20 +823,12 @@ const AppComp: React.FC = () => {
             <BottomNavBar cartItemCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} />
 
             <footer className="text-center text-xs text-orange-400/60 mt-12 pb-24 sm:pb-8 relative z-10">
-                <div className="flex justify-center items-center gap-4 sm:gap-8 mb-8">
-                    <div className="group flex flex-col items-center gap-2 cursor-pointer">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-900/40 to-green-600/10 border border-green-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(34,197,94,0.1)] group-hover:shadow-[0_0_25px_rgba(34,197,94,0.4)] group-hover:border-green-400/50 transition-all duration-500 group-hover:-translate-y-1">
-                            <svg className="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        </div>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-green-500/60 group-hover:text-green-400 transition-colors">Verified</span>
-                    </div>
-                    <div className="group flex flex-col items-center gap-2 cursor-pointer">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-900/40 to-blue-600/10 border border-blue-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.1)] group-hover:shadow-[0_0_25px_rgba(59,130,246,0.4)] group-hover:border-blue-400/50 transition-all duration-500 group-hover:-translate-y-1">
-                            <svg className="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                        </div>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-blue-500/60 group-hover:text-blue-400 transition-colors">Secure</span>
-                    </div>
+                <div className="flex justify-center items-center gap-2 opacity-30 mt-6">
+                    <div className="w-16 h-[1px] bg-white"></div>
+                    <div className="w-2 h-2 rounded-full border border-white"></div>
+                    <div className="w-16 h-[1px] bg-white"></div>
                 </div>
+
                 <p className="mt-4 text-[10px] uppercase tracking-[0.2em]">{t('copyright')}</p>
             </footer>
         </div>
