@@ -294,7 +294,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         try { const saved = localStorage.getItem('okFutureZoneSupportTickets'); return saved ? JSON.parse(saved) : []; } catch { return []; }
     });
     
-    // Initialize wishlist/cart from LocalStorage, but will overwrite with Cloud data on login
     const [wishlist, setWishlist] = useState<string[]>(() => {
         try { const saved = localStorage.getItem('okFutureZoneWishlist'); return saved ? JSON.parse(saved) : []; } catch { return []; }
     });
@@ -823,12 +822,20 @@ const AppComp: React.FC = () => {
             <BottomNavBar cartItemCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} />
 
             <footer className="text-center text-xs text-orange-400/60 mt-12 pb-24 sm:pb-8 relative z-10">
-                <div className="flex justify-center items-center gap-2 opacity-30 mt-6">
-                    <div className="w-16 h-[1px] bg-white"></div>
-                    <div className="w-2 h-2 rounded-full border border-white"></div>
-                    <div className="w-16 h-[1px] bg-white"></div>
+                <div className="flex justify-center items-center gap-4 sm:gap-8 mb-8">
+                    <div className="group flex flex-col items-center gap-2 cursor-pointer">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-900/40 to-green-600/10 border border-green-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(34,197,94,0.1)] group-hover:shadow-[0_0_25px_rgba(34,197,94,0.4)] group-hover:border-green-400/50 transition-all duration-500 group-hover:-translate-y-1">
+                            <svg className="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-green-500/60 group-hover:text-green-400 transition-colors">Verified</span>
+                    </div>
+                    <div className="group flex flex-col items-center gap-2 cursor-pointer">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-900/40 to-blue-600/10 border border-blue-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.1)] group-hover:shadow-[0_0_25px_rgba(59,130,246,0.4)] group-hover:border-blue-400/50 transition-all duration-500 group-hover:-translate-y-1">
+                            <svg className="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-blue-500/60 group-hover:text-blue-400 transition-colors">Secure</span>
+                    </div>
                 </div>
-
                 <p className="mt-4 text-[10px] uppercase tracking-[0.2em]">{t('copyright')}</p>
             </footer>
         </div>
